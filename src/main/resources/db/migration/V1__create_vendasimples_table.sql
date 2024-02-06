@@ -1,0 +1,28 @@
+CREATE TABLE IF NOT EXISTS cliente (
+	id BIGINT PRIMARY KEY AUTO_INCREMENT,
+	nome VARCHAR(255),
+	email VARCHAR(255) UNIQUE NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS produto (
+	id BIGINT PRIMARY KEY AUTO_INCREMENT,
+	nome VARCHAR(255),
+	preco DECIMAL (3,2)
+);
+
+CREATE TABLE IF NOT EXISTS pedido (
+	id BIGINT PRIMARY KEY AUTO_INCREMENT,
+	data_criacao DATE,
+	status VARCHAR(255),
+	cliente_id BIGINT,
+	FOREIGN KEY (cliente_id) REFERENCES cliente(id)
+);
+
+CREATE TABLE IF NOT EXISTS itens_pedido (
+	id BIGINT PRIMARY KEY AUTO_INCREMENT,
+	quantidade INT,
+	produto_id BIGINT,
+	pedido_id BIGINT,
+	FOREIGN KEY (produto_id) REFERENCES produto(id),
+	FOREING KEY (pedido_id) REFERENCES pedido(id)
+);
