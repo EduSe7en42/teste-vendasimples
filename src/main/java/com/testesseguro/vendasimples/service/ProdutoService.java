@@ -1,13 +1,14 @@
 package com.testesseguro.vendasimples.service;
 
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.testesseguro.vendasimples.model.Produto;
 import com.testesseguro.vendasimples.repository.ProdutoRepository;
+
+import jakarta.persistence.EntityNotFoundException;
 
 @Service
 public class ProdutoService {
@@ -20,8 +21,14 @@ public class ProdutoService {
 	}
 	
 	public Produto findProdutoById(Long id) {
-		Optional<Produto> produto = produtoRepository.findById(id);
+		Produto produto;
 		
-		return produto.get();
+		try {
+			produto = produtoRepository.findById(id).get();
+		} catch (Exception e) {
+			throw new EntityNotFoundException();
+		}
+		
+		return produto;
 	}
 }

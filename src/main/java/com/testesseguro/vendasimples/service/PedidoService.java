@@ -12,6 +12,8 @@ import com.testesseguro.vendasimples.model.Pedido;
 import com.testesseguro.vendasimples.repository.ClienteRepository;
 import com.testesseguro.vendasimples.repository.PedidoRepository;
 
+import jakarta.persistence.EntityNotFoundException;
+
 @Service
 public class PedidoService {
 	@Autowired
@@ -25,11 +27,28 @@ public class PedidoService {
 	}
 	
 	public Pedido findById(Long id) {
-		return pedidoRepository.findById(id).get();
+		Pedido pedido;
+		
+		try {
+			pedido = pedidoRepository.findById(id).get();
+		} catch (Exception e) {
+			throw new EntityNotFoundException();
+		}
+		
+		return pedido;
 	}
 	
-	public Pedido save(PedidoDTO pedidoDTO) {
+	public Pedido save(PedidoDTO pedidoDTO) throws Exception {
 		Cliente cliente = clienteRepository.findById(pedidoDTO.getCliente()).get();
+		
+		
+		if (cliente.equals(null)) {
+			throw new Exception("Cliente não existente.");
+		}
+		
+		if (pedidoDTO.getStatus().isBlank() || pedidoDTO.getStatus().isEmpty()) {
+			pedidoDTO.setStatus("pendente");
+		}
 		
 		Pedido pedido = new Pedido();
 		
@@ -37,6 +56,12 @@ public class PedidoService {
 		pedido.setDataCriacao(LocalDate.now());
 		pedido.setStatus(pedidoDTO.getStatus());	
 		
-		return pedidoRepository.save(pedido);
+		try {
+			pedidoRepository.save(pedido);
+		} catch (Exception e) {
+			throw new Exception("Não foi possível salvar o pedido.");
+		}
+		
+		return pedido;
 	}
 }

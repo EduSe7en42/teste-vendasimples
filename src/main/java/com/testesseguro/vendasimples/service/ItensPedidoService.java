@@ -24,9 +24,17 @@ public class ItensPedidoService {
 	@Autowired
 	public ProdutoRepository produtoRepository;
 	
-	public ItensPedido save(ItensPedidoDTO itensPedidoDTO) {
+	public ItensPedido save(ItensPedidoDTO itensPedidoDTO) throws Exception {
 		Pedido pedido = pedidoRepository.findById(itensPedidoDTO.getPedido()).get();
 		Produto produto = produtoRepository.findById(itensPedidoDTO.getProduto()).get();
+		
+		if (pedido.equals(null)) {
+			throw new Exception("Não foi possível localizar o pedido.");
+		}
+		
+		if (produto.equals(null)) {
+			throw new Exception("Não foi possível localizar o produto.");
+		}
 		
 		ItensPedido itensPedido = new ItensPedido();
 		itensPedido.setQuantidade(itensPedidoDTO.getQuantidade());
