@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.testesseguro.vendasimples.model.Produto;
 import com.testesseguro.vendasimples.service.ProdutoService;
@@ -29,7 +30,13 @@ public class ProdutoController {
 	
 	@GetMapping(path = "/produto/{id}")
 	public ResponseEntity<Produto> getById(@PathVariable("id") Long id) {
-		Produto produto = produtoService.findProdutoById(id);
+		Produto produto;
+		
+		try {
+			produto = produtoService.findProdutoById(id);
+		} catch(Exception e) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Não foi possível localizar o produto.");
+		}
 		
 		return new ResponseEntity<Produto>(produto, HttpStatus.OK);
 	}

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.testesseguro.vendasimples.model.Cliente;
 import com.testesseguro.vendasimples.service.ClienteService;
@@ -28,7 +29,14 @@ public class ClienteController {
 	
 	@GetMapping(path = "/cliente/{id}")
 	public ResponseEntity<Cliente> findById(@PathVariable("id") Long id) {
-		Cliente cliente = clienteService.findById(id);
+		Cliente cliente;
+		
+		try {
+			cliente = clienteService.findById(id);
+		} catch (Exception e) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, 
+					String.format("Cliente com id %d não encontrado.", id));
+		}		
 		
 		return new ResponseEntity<Cliente>(cliente, HttpStatus.OK);
 	}

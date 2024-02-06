@@ -38,12 +38,12 @@ public class ItensPedido {
 	private float quantidade;
 	
 	@ManyToOne
-    @JoinColumn(name="id_produto", nullable=false)
+    @JoinColumn(name="produto_id", nullable=false)
 	@JsonManagedReference
     private Produto produto;
 	
 	@ManyToOne
-    @JoinColumn(name="id_pedido", nullable=false)
+    @JoinColumn(name="pedido_id", nullable=false)
 	@JsonBackReference
     private Pedido pedido;
 }

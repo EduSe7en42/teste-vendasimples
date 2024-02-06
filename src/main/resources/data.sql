@@ -1,4 +1,4 @@
-INSERT INTO CLIENTE VALUES(1, 'leticia@email.com', 'Letícia');
+-- INSERT INTO CLIENTE VALUES(1, 'leticia@email.com', 'Letícia');
 INSERT INTO CLIENTE VALUES(2, 'eduardo@email.com', 'Eduardo');
 
 INSERT INTO PRODUTO VALUES(23.00, 1, 'Caneca');

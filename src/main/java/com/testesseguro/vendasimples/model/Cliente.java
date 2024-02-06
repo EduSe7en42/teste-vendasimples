@@ -32,8 +32,8 @@ import lombok.Setter;
 		  property = "id")
 public class Cliente {
 	@Id
-	@Column(name="id_cliente")
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name="id")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
 	@JsonProperty("nome")

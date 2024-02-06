@@ -19,7 +19,7 @@ public class ItensPedidoDTO {
 	}
 	public Long getPedido() {
 		return pedido;
-	}
+	} 
 	public void setPedido(Long pedido) {
 		this.pedido = pedido;
 	}

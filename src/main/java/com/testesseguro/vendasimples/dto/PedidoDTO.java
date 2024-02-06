@@ -10,7 +10,7 @@ public class PedidoDTO  {
 
 	public void setCliente(Long cliente) {
 		this.cliente = cliente;
-	}
+	} 
 
 	public String getStatus() {
 		return status;

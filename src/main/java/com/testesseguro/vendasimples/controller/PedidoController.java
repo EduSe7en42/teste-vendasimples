@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
 import com.testesseguro.vendasimples.dto.PedidoDTO;
 import com.testesseguro.vendasimples.model.Pedido;
@@ -32,18 +33,37 @@ public class PedidoController {
 	public ResponseEntity<List<Pedido>> findAll() {
 		List<Pedido> listPedido = pedidoService.findAll();
 		
+		if (listPedido.isEmpty()) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Nenhum pedido foi encontrado.");
+		}
+		
 		return new ResponseEntity<List<Pedido>>(listPedido, HttpStatus.OK);
 	}
 	
 	@GetMapping(path = "/pedido/{id}")
 	public ResponseEntity<Pedido> findById(@PathVariable("id") Long id) {
-		Pedido pedido = pedidoService.findById(id);
+		Pedido pedido;
+		
+		try {
+			pedido = pedidoService.findById(id);
+		} catch (Exception e) {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, 
+					String.format("Pedido com id %d não encontrado.", id));
+		}
 		
 		return new ResponseEntity<Pedido>(pedido, HttpStatus.OK);
 	}
 	
 	@PostMapping(path = "/pedido")
-	public Pedido save(@Valid @RequestBody PedidoDTO pedidoDTO) {		
-		return pedidoService.save(pedidoDTO);
+	public Pedido save(@Valid @RequestBody PedidoDTO pedidoDTO) {	
+		Pedido pedido;
+		
+		try {
+			pedido = pedidoService.save(pedidoDTO);
+		} catch(Exception e) {
+			throw new ResponseStatusException(HttpStatus.NOT_ACCEPTABLE, "Não foi possível salvar o pedido");
+		}
+		
+		return pedido;
 	}
 }

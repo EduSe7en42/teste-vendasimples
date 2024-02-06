@@ -33,8 +33,8 @@ import lombok.Setter;
 public class Produto {
 	
 	@Id
-	@Column(name="id_produto")
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name="id")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
 	@JsonProperty("nome")

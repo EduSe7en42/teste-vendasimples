@@ -37,18 +37,18 @@ import lombok.Setter;
 public class Pedido {
 	
 	@Id
-	@Column(name="id_pedido")
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@Column(name="id")
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
 	@ManyToOne
     @JoinColumn(name="cliente_id", nullable=false)
-	@JsonProperty("cliente")
+	@JsonProperty("cliente_id")
     private Cliente cliente;
 	
 	@JsonFormat(shape = JsonFormat.Shape.STRING,pattern = "dd-MM-yyyy")
     @JsonProperty("data_criacao")
-    @Column(name = "dt_criacao")
+    @Column(name = "data_criacao")
 	private LocalDate dataCriacao;
 	
 	@JsonProperty("status")
